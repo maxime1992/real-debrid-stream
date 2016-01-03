@@ -1,8 +1,10 @@
 import {bootstrap} from 'angular2/platform/browser';
 import {Component, View, enableProdMode} from 'angular2/core';
 import {RouteConfig, ROUTER_DIRECTIVES, ROUTER_PROVIDERS} from 'angular2/router';
+import {HTTP_PROVIDERS} from 'angular2/http';
 
 import {StreamComponent} from './stream/stream.component';
+
 
 @Component({
 	selector: 'app'
@@ -42,5 +44,6 @@ enableProdMode();
 // @endif
 
 bootstrap(AppComponent, [
-	ROUTER_PROVIDERS
+	ROUTER_PROVIDERS,
+	HTTP_PROVIDERS
 ]);

@@ -3,6 +3,7 @@
 html {
   body {
     margin: 70px 0 50px;
+    min-width: 300px;
   }
 }
 
@@ -59,7 +60,7 @@ html {
 
 .stream-item {
 
-  button {
+  input[type='button'] {
     margin-top: 10px;
   }
 }
