@@ -18,7 +18,7 @@ export class StreamService {
 			}
 
 			// otherwise reach real-debrid API to get one
-			return this.http.get(`https://real-debrid.com/ajax/login.php?user=yourEmail@gmail.com&pass=yourPassword`)
+			return this.http.get(`https://real-debrid.com/ajax/login.php?user=YourEmail&pass=YourPassword`)
 				.map((res: any) => res.json())
 				.subscribe((data: any) => {
 					// save the token

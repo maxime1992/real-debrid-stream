@@ -40,7 +40,8 @@ gulp.task('build', gulp.series(
 	gulp.parallel(scss, ts),
 	assets,
 	index,
-	typedoc
+	typedoc,
+	chromeAppAssets
 ));
 
 gulp.task('serve', gulp.series(
@@ -244,4 +245,13 @@ function livereload() {
 		port: env.PORT,
 		middleware: (connect, opt) => [history()]
 	});
+}
+
+// copy manifest.json and icon.png to /build folder
+function chromeAppAssets() {
+	gulp.src('manifest.json')
+		.pipe(gulp.dest('./build'));
+
+	return gulp.src('icon.png')
+		.pipe(gulp.dest('./build'));
 }
