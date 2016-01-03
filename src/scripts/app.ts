@@ -2,8 +2,7 @@ import {bootstrap} from 'angular2/platform/browser';
 import {Component, View, enableProdMode} from 'angular2/core';
 import {RouteConfig, ROUTER_DIRECTIVES, ROUTER_PROVIDERS} from 'angular2/router';
 
-import {TodoComponent} from './todo/todo.component';
-import {AboutComponent} from './about/about.component';
+import {StreamComponent} from './stream/stream.component';
 
 @Component({
 	selector: 'app'
@@ -13,8 +12,8 @@ import {AboutComponent} from './about/about.component';
 	template: `
 		<div>
 			<ul class="nav nav-pills">
-				<li class="nav-item"><a class="nav-link" [routerLink]="['Todo']">Todo</a></li>
-				<li class="nav-item"><a class="nav-link" [routerLink]="['About']">About</a></li>
+				<li class="nav-item"><a class="nav-link" [routerLink]="['Stream']">Stream</a></li>
+				<li class="nav-item"><a class="nav-link">Settings</a></li>
 			</ul>
 			<hr>
 			<router-outlet></router-outlet>
@@ -22,8 +21,7 @@ import {AboutComponent} from './about/about.component';
 	`
 })
 @RouteConfig([
-	{ path: '/todo', name: 'Todo', component: TodoComponent, useAsDefault: true },
-	{ path: '/about', name: 'About', component: AboutComponent }
+	{ path: '/stream', name: 'Stream', component: StreamComponent, useAsDefault: true }
 ])
 export class AppComponent {
 	/**

@@ -2,7 +2,7 @@
 
 html {
   body {
-    margin: 90px 0 50px;
+    margin: 70px 0 50px;
   }
 }
 
@@ -49,5 +49,17 @@ html {
       color: $gray-lighter;
       text-decoration: line-through;
     }
+  }
+}
+
+
+// --------------
+// Stream Component
+// --------------
+
+.stream-item {
+
+  button {
+    margin-top: 10px;
   }
 }
