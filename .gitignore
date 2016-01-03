@@ -1,0 +1,10 @@
+# Folders
+/node_modules
+/docs
+/build
+/coverage
+/.karma
+/.protractor
+
+# Files
+npm-debug.log
