@@ -53,14 +53,28 @@ html {
   }
 }
 
-
 // --------------
 // Stream Component
 // --------------
 
 .stream-item {
-
   input[type='button'] {
     margin-top: 10px;
+  }
+}
+
+// --------------
+// Settings Component
+// --------------
+
+.settings-item {
+  .real-debrid-password,
+  .kodi-password {
+    margin-top: 15px;
+    display: inline-block;
+  }
+
+  .kodi {
+    margin-top: 15px;
   }
 }

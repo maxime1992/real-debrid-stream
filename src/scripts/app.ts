@@ -4,7 +4,7 @@ import {RouteConfig, ROUTER_DIRECTIVES, ROUTER_PROVIDERS} from 'angular2/router'
 import {HTTP_PROVIDERS} from 'angular2/http';
 
 import {StreamComponent} from './stream/stream.component';
-
+import {SettingsComponent} from './stream/settings.component';
 
 @Component({
 	selector: 'app'
@@ -15,7 +15,7 @@ import {StreamComponent} from './stream/stream.component';
 		<div>
 			<ul class="nav nav-pills">
 				<li class="nav-item"><a class="nav-link" [routerLink]="['Stream']">Stream</a></li>
-				<li class="nav-item"><a class="nav-link">Settings</a></li>
+				<li class="nav-item"><a class="nav-link" [routerLink]="['Settings']">Settings</a></li>
 			</ul>
 			<hr>
 			<router-outlet></router-outlet>
@@ -23,7 +23,8 @@ import {StreamComponent} from './stream/stream.component';
 	`
 })
 @RouteConfig([
-	{ path: '/stream', name: 'Stream', component: StreamComponent, useAsDefault: true }
+	{ path: '/stream', name: 'Stream', component: StreamComponent, useAsDefault: true },
+	{ path: '/settings', name: 'Settings', component: SettingsComponent }
 ])
 export class AppComponent {
 	/**

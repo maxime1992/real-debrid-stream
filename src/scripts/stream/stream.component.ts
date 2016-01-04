@@ -14,7 +14,7 @@ import {StreamService} from './stream.service';
 			(ngSubmit)="stream(urlToStream)">
 			<input
 				type="text"
-				class="form-control form-control-lg"
+				class="form-control"
 				placeholder="Url to stream"
 				[(ngModel)]="urlToStream" />
 
