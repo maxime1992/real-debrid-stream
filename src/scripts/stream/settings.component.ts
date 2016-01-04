@@ -1,8 +1,10 @@
 import {Component, View} from 'angular2/core';
 import {FORM_DIRECTIVES} from 'angular2/common';
+import {SettingsService} from './settings.service';
 
 @Component({
-	selector: 'settings'
+	selector: 'settings',
+	providers: [SettingsService]
 })
 @View({
 	directives: [FORM_DIRECTIVES],
@@ -44,9 +46,20 @@ export class SettingsComponent {
 	private realDebridPassword: string;
 	private kodiIp: string;
 
+	constructor(private settingsService: SettingsService) {
+		// at the beginning, restore settings
+		this.getSettings();
+	}
+
 	public saveSettings() {
-		console.log('RD mail ' + this.realDebridEmail);
-		console.log('RD pwd ' + this.realDebridPassword);
-		console.log('KD mail ' + this.kodiIp);
+		this.settingsService.setSetting('realDebridEmail', this.realDebridEmail);
+		this.settingsService.setSetting('realDebridPassword', this.realDebridPassword);
+		this.settingsService.setSetting('kodiIp', this.kodiIp);
+	}
+
+	public getSettings() {
+		this.realDebridEmail = this.settingsService.getSetting('realDebridEmail');
+		this.realDebridPassword = this.settingsService.getSetting('realDebridPassword');
+		this.kodiIp = this.settingsService.getSetting('kodiIp');
 	}
 }
