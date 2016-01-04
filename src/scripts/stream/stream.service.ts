@@ -1,13 +1,14 @@
 import 'rxjs/add/operator/map';
 
 import {Injectable} from 'angular2/core';
-import {Http} from 'angular2/http';
+import {Http, Jsonp} from 'angular2/http';
+import {SettingsService} from './settings.service';
 
 @Injectable()
 export class StreamService {
 	private tokenRealDebrid: string;
 
-	constructor(private http: Http) {}
+	constructor(private http: Http, private jsonp: Jsonp, public settingsService: SettingsService) { }
 
 	private realDebridConnect(): Promise<string> {
 		return new Promise<string>((resolve: any, reject: any) => {
@@ -18,7 +19,7 @@ export class StreamService {
 			}
 
 			// otherwise reach real-debrid API to get one
-			return this.http.get(`https://real-debrid.com/ajax/login.php?user=YourEmail&pass=YourPassword`)
+			return this.http.get(`https://real-debrid.com/ajax/login.php?user=${encodeURIComponent(this.settingsService.getSetting('realDebridEmail'))}&pass=${encodeURIComponent(this.settingsService.getSetting('realDebridPassword'))}`)
 				.map((res: any) => res.json())
 				.subscribe((data: any) => {
 					// save the token
@@ -33,23 +34,26 @@ export class StreamService {
 
 		return new Promise<string>((resolve: any, reject: any) => {
 			this.realDebridConnect().then(
-				(resolve: any) => {
-					console.log(`Connected, token : ` + resolve);
-					console.log(`https://real-debrid.com/api/unrestrict.php?auth=${this.tokenRealDebrid}&link=${encodeURIComponent(link)}`);
-
-					setTimeout(() => {
-						self.http.get(`https://real-debrid.com/api/unrestrict.php?auth=${this.tokenRealDebrid}&link=${encodeURIComponent(link)}`)
-							.map((res: any) => res.json())
-							.subscribe((data: any) => {
-								// return the unrestricted link
-								resolve(data.main_link);
-							});
-					}, 100);
+				() => {
+					self.http.get(`https://real-debrid.com/api/unrestrict.php?auth=${encodeURIComponent(this.tokenRealDebrid)}&link=${encodeURIComponent(link)}`)
+						.map((res: any) => res.json())
+						.subscribe((data: any) => {
+							// return the unrestricted link
+							resolve('data.main_link');
+						});
 				},
 				(reject: any) => {
 					alert('A problem happened while reaching real-debrid API');
 				}
 			);
 		});
+	}
+
+	public streamOnKodi(link: string) {
+		this.jsonp.request(`http://${encodeURIComponent(this.settingsService.getSetting('kodiIp'))}/jsonrpc?request={ "jsonrpc": "2.0", "method": "Player.Open", "params": { "item": { "file": "${encodeURIComponent(link)}" }}, "id": 1 }`)
+			.map((res: any) => res.json())
+			.subscribe((data: any) => {
+				console.log('stream ok');
+			});
 	}
 }

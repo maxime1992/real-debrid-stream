@@ -34,6 +34,14 @@ export class StreamComponent {
 			return;
 		}
 
-		this.streamService.realDebridUnrestrictLink('https://1fichier.com/?ncmo9iqy1r');
+		// get unrestricted link from real debrid
+		this.streamService.realDebridUnrestrictLink(urlToStream).then(
+			(unrestrictedLink: any) =>  {
+				// send the link of the file to kodi
+				this.streamService.streamOnKodi(unrestrictedLink);
+			},
+			(reject: any) => {
+				alert('A problem happened while streaming to Kodi');
+			});
 	}
 }
