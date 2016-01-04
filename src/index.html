@@ -12,6 +12,8 @@
 
 	<!-- inject:css -->
 	<!-- endinject -->
+
+	<script src="/js/app.config.js"></script>
 </head>
 <body>
 	<nav class="navbar navbar-fixed-top navbar-dark bg-primary">
@@ -25,29 +27,5 @@
 	<div class="container">
 		<app>Loading the awesome ...</app>
 	</div>
-
-	<script>
-		<!-- @if isDev -->
-		System
-			.config({
-				packages: { 'js': { defaultExtension: 'js' } }
-			});
-
-		System
-			.import('js/app.js')
-			.catch(console.error.bind(console));
-		<!-- @endif -->
-
-		<!-- @if isProd -->
-		System
-			.config({
-				bundles: { 'js/app.js': ['app'] }
-			});
-
-		System
-			.import('app')
-			.catch(console.error.bind(console));
-		<!-- @endif -->
-	</script>
 </body>
 </html>
