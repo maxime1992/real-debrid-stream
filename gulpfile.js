@@ -148,7 +148,6 @@ function index() {
 
 	return gulp.src('src/index.html')
 		.pipe(plugins.inject(source, { ignorePath: 'build' }))
-		.pipe(plugins.preprocess({ context: env }))
 		.pipe(gulp.dest('build'))
 		.pipe(plugins.connect.reload());
 }
