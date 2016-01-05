@@ -1,5 +1,7 @@
 # Real debrid stream
 
+[![Join the chat at https://gitter.im/maxime1992/real-debrid-stream](https://badges.gitter.im/maxime1992/real-debrid-stream.svg)](https://gitter.im/maxime1992/real-debrid-stream?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 Stream movies on your raspberry pi using your real debrid account
 
 ## Install
