@@ -6,10 +6,6 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>Real debrid stream</title>
-
-	<!-- inject:js -->
-	<!-- endinject -->
-
 	<!-- inject:css -->
 	<!-- endinject -->
 </head>
@@ -26,28 +22,9 @@
 		<app>Loading the awesome ...</app>
 	</div>
 
-	<script>
-		<!-- @if isDev -->
-		System
-			.config({
-				packages: { 'js': { defaultExtension: 'js' } }
-			});
-
-		System
-			.import('js/app.js')
-			.catch(console.error.bind(console));
-		<!-- @endif -->
-
-		<!-- @if isProd -->
-		System
-			.config({
-				bundles: { 'js/app.js': ['app'] }
-			});
-
-		System
-			.import('app')
-			.catch(console.error.bind(console));
-		<!-- @endif -->
-	</script>
+	<!-- inject:js -->
+	<!-- endinject -->
+	
+	<script src="/js/app.config.js"></script>
 </body>
 </html>

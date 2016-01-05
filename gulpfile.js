@@ -37,6 +37,7 @@ gulp.task(clean);
 
 gulp.task('build', gulp.series(
 	clean,
+	tsAppConfig,
 	gulp.parallel(scss, ts),
 	assets,
 	index,
@@ -97,13 +98,36 @@ function typedoc() {
 		}));
 }
 
+var tsAppConfig = plugins.typescript.createProject('tsconfig.json', {
+	typescript: require('typescript'),
+	outFile: 'app.config.js'
+});
+
 var tsProject = plugins.typescript.createProject('tsconfig.json', {
 	typescript: require('typescript'),
 	outFile: env.isProd ? 'app.js' : undefined
 });
 
+function tsAppConfig() {
+	var tsResult = gulp.src('src/scripts/app.config.ts')
+		.pipe(plugins.tslint())
+		.pipe(plugins.tslint.report('verbose'))
+		.pipe(plugins.preprocess({ context: env }))
+		.pipe(plugins.if(env.isDev, plugins.sourcemaps.init()))
+		.pipe(plugins.typescript(tsAppConfig));
+
+	return tsResult.js
+		.pipe(plugins.if(env.isProd, plugins.uglify()))
+		.pipe(plugins.if(env.isDev, plugins.sourcemaps.write({
+			sourceRoot: path.join(__dirname, '/src/scripts')
+		})))
+		.pipe(plugins.size({ title: 'ts' }))
+		.pipe(gulp.dest('build/js'))
+		.pipe(plugins.connect.reload());
+}
+
 function ts() {
-	var tsResult = gulp.src('src/scripts/**/*.ts')
+	var tsResult = gulp.src(['src/scripts/**/*.ts', '!src/scripts/app.config.ts'])
 		.pipe(plugins.tslint())
 		.pipe(plugins.tslint.report('verbose'))
 		.pipe(plugins.preprocess({ context: env }))
@@ -149,7 +173,6 @@ function index() {
 
 	return gulp.src('src/index.html')
 		.pipe(plugins.inject(source, { ignorePath: 'build' }))
-		.pipe(plugins.preprocess({ context: env }))
 		.pipe(gulp.dest('build'))
 		.pipe(plugins.connect.reload());
 }
