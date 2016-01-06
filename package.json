@@ -8,6 +8,7 @@
   "version": "0.0.0",
   "description": "Allows you to debrid url with your real debrid account and stream the video on your raspberry pi for example.",
   "scripts": {
+    "postinstall": "typings install",
     "start": "gulp build serve"
   },
   "author": "maxime1992",

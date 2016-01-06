@@ -5,6 +5,7 @@
 /coverage
 /.karma
 /.protractor
+/typings
 
 # Files
 npm-debug.log

@@ -1,0 +1,8 @@
+{
+  "ambientDependencies": {
+    "chrome": "github:DefinitelyTyped/DefinitelyTyped/chrome/chrome.d.ts#f11e49cfb77f99678657ddfe5d43017849675c64",
+    "MediaStream": "github:DefinitelyTyped/DefinitelyTyped/webrtc/MediaStream.d.ts#f11e49cfb77f99678657ddfe5d43017849675c64",
+    "filesystem": "github:DefinitelyTyped/DefinitelyTyped/filesystem/filesystem.d.ts#f11e49cfb77f99678657ddfe5d43017849675c64",
+    "filewriter": "github:DefinitelyTyped/DefinitelyTyped/filewriter/filewriter.d.ts#f11e49cfb77f99678657ddfe5d43017849675c64"
+  }
+}
