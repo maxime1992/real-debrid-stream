@@ -24,14 +24,18 @@ export class StreamService {
 				return;
 			}
 
-			// otherwise reach real-debrid API to get one
-			return this.http.get(`https://real-debrid.com/ajax/login.php?user=${encodeURIComponent(this.settingsService.getSetting('realDebridEmail'))}&pass=${encodeURIComponent(this.settingsService.getSetting('realDebridPassword'))}`)
-				.map((res: any) => res.json())
-				.subscribe((data: any) => {
-					// save the token
-					this.tokenRealDebrid = data.cookie.match(/auth=(.*);/)[1];
-					resolve(this.tokenRealDebrid);
+			this.settingsService.getSetting('realDebridEmail').then((realDebridEmail: string) => {
+				this.settingsService.getSetting('realDebridPassword').then((realDebridPassword: string) => {
+					// otherwise reach real-debrid API to get one
+					return this.http.get(`https://real-debrid.com/ajax/login.php?user=${encodeURIComponent(realDebridEmail)}&pass=${encodeURIComponent(realDebridPassword)}`)
+						.map((res: any) => res.json())
+						.subscribe((data: any) => {
+							// save the token
+							this.tokenRealDebrid = data.cookie.match(/auth=(.*);/)[1];
+							resolve(this.tokenRealDebrid);
+						});
 				});
+			});
 		});
 	}
 
@@ -45,7 +49,7 @@ export class StreamService {
 						.map((res: any) => res.json())
 						.subscribe((data: any) => {
 							// return the unrestricted link
-							resolve('data.main_link');
+							resolve(data.main_link);
 						});
 				},
 				(reject: any) => {
@@ -56,10 +60,12 @@ export class StreamService {
 	}
 
 	public streamOnKodi(link: string) {
-		this.jsonp.request(`http://${encodeURIComponent(this.settingsService.getSetting('kodiIp'))}/jsonrpc?request={ "jsonrpc": "2.0", "method": "Player.Open", "params": { "item": { "file": "${encodeURIComponent(link)}" }}, "id": 1 }`)
-			.map((res: any) => res.json())
-			.subscribe((data: any) => {
-				this.notificationService.notify('The link has been streamed on Kodi');
-			});
+		this.settingsService.getSetting('kodiIp').then((kodiIp: string) => {
+			this.jsonp.request(`http://${encodeURIComponent(kodiIp)}/jsonrpc?request={ "jsonrpc": "2.0", "method": "Player.Open", "params": { "item": { "file": "${encodeURIComponent(link)}" }}, "id": 1 }`)
+				.map((res: any) => res.json())
+				.subscribe((data: any) => {
+					this.notificationService.notify('The link has been streamed on Kodi');
+				});
+		});
 	}
 }

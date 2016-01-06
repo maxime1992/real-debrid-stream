@@ -3,14 +3,17 @@ import {Injectable} from 'angular2/core';
 @Injectable()
 export class SettingsService {
 	public getSetting(key: string) {
-		if (sessionStorage.getItem(key) != null) {
-			return sessionStorage.getItem(key);
-		}
-
-		return '';
+		return new Promise<string>((resolve: any, reject: any) => {
+			chrome.storage.sync.get(key, (response: string) => {
+				resolve(response[key]);
+			});
+		});
 	}
 
 	public setSetting(key: string, value: string) {
-		sessionStorage.setItem(key, value);
+		let keyValue = {};
+		keyValue[key] = value;
+
+		chrome.storage.sync.set(keyValue);
 	}
 }

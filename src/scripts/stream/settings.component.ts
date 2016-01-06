@@ -58,8 +58,8 @@ export class SettingsComponent {
 	}
 
 	public getSettings() {
-		this.realDebridEmail = this.settingsService.getSetting('realDebridEmail');
-		this.realDebridPassword = this.settingsService.getSetting('realDebridPassword');
-		this.kodiIp = this.settingsService.getSetting('kodiIp');
+		this.settingsService.getSetting('realDebridEmail').then((value: string) => this.realDebridEmail = value);
+		this.settingsService.getSetting('realDebridPassword').then((value: string) => this.realDebridPassword = value);
+		this.settingsService.getSetting('kodiIp').then((value: string) => this.kodiIp = value);
 	}
 }
