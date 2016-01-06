@@ -38,7 +38,7 @@ gulp.task(clean);
 gulp.task('build', gulp.series(
 	clean,
 	tsAppConfig,
-	gulp.parallel(scss, ts),
+	gulp.parallel(scss, tsApp),
 	assets,
 	index,
 	typedoc,
@@ -69,7 +69,6 @@ gulp.task('e2e', gulp.series(
 /**
  * Definitions
  */
-
 function clean() {
 	return del(['docs', 'coverage', 'build', '.karma', '.protractor']);
 }
@@ -98,23 +97,13 @@ function typedoc() {
 		}));
 }
 
-var tsAppConfig = plugins.typescript.createProject('tsconfig.json', {
-	typescript: require('typescript'),
-	outFile: 'app.config.js'
-});
-
-var tsProject = plugins.typescript.createProject('tsconfig.json', {
-	typescript: require('typescript'),
-	outFile: env.isProd ? 'app.js' : undefined
-});
-
-function tsAppConfig() {
-	var tsResult = gulp.src('src/scripts/app.config.ts')
+function ts(root, src) {
+	var tsResult = gulp.src(src)
 		.pipe(plugins.tslint())
 		.pipe(plugins.tslint.report('verbose'))
 		.pipe(plugins.preprocess({ context: env }))
 		.pipe(plugins.if(env.isDev, plugins.sourcemaps.init()))
-		.pipe(plugins.typescript(tsAppConfig));
+		.pipe(plugins.typescript(root));
 
 	return tsResult.js
 		.pipe(plugins.if(env.isProd, plugins.uglify()))
@@ -126,23 +115,22 @@ function tsAppConfig() {
 		.pipe(plugins.connect.reload());
 }
 
-function ts() {
-	var tsResult = gulp.src(['src/scripts/**/*.ts', '!src/scripts/app.config.ts'])
-		.pipe(plugins.tslint())
-		.pipe(plugins.tslint.report('verbose'))
-		.pipe(plugins.preprocess({ context: env }))
-		.pipe(plugins.inlineNg2Template({ base: 'src/scripts' }))
-		.pipe(plugins.if(env.isDev, plugins.sourcemaps.init()))
-		.pipe(plugins.typescript(tsProject));
+function tsAppConfig() {
+	var config = plugins.typescript.createProject('tsconfig.json', {
+		typescript: require('typescript'),
+		outFile: 'app.config.js'
+	});
 
-	return tsResult.js
-		.pipe(plugins.if(env.isProd, plugins.uglify()))
-		.pipe(plugins.if(env.isDev, plugins.sourcemaps.write({
-			sourceRoot: path.join(__dirname, '/src/scripts')
-		})))
-		.pipe(plugins.size({ title: 'ts' }))
-		.pipe(gulp.dest('build/js'))
-		.pipe(plugins.connect.reload());
+	return ts(config, 'src/scripts/app.config.ts');
+}
+
+function tsApp() {
+	var config = plugins.typescript.createProject('tsconfig.json', {
+		typescript: require('typescript'),
+		outFile: env.isProd ? 'app.js' : undefined
+	});
+
+	return ts(config, ['src/scripts/**/*.ts', '!src/scripts/app.config.ts']);
 }
 
 function assets() {
