@@ -61,10 +61,16 @@ export class StreamService {
 
 	public streamOnKodi(link: string) {
 		this.settingsService.getSetting('kodiIp').then((kodiIp: string) => {
-			this.jsonp.request(`http://${encodeURIComponent(kodiIp)}/jsonrpc?request={ "jsonrpc": "2.0", "method": "Player.Open", "params": { "item": { "file": "${encodeURIComponent(link)}" }}, "id": 1 }`)
+			this.http.get(`http://${kodiIp}/jsonrpc?request={ "jsonrpc": "2.0", "method": "Player.Open", "params": { "item": { "file": "${encodeURIComponent(link)}" }}, "id": 1 }`)
 				.map((res: any) => res.json())
 				.subscribe((data: any) => {
-					this.notificationService.notify('The link has been streamed on Kodi');
+					if (data.result === 'ok') {
+						// link has been streamed to kodi
+					}
+
+					else {
+						// link has not been streamed to kodi
+					}
 				});
 		});
 	}
