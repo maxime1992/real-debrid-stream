@@ -88,7 +88,7 @@ function scss() {
 }
 
 function typedoc() {
-	return gulp.src(['src/scripts/**/*.ts', 'typings/main.d.ts'])
+	return gulp.src(['typings/main.d.ts', 'src/scripts/**/*.ts'])
 		.pipe(plugins.typedoc({
 			module: 'commonjs',
 			target: 'es5',
@@ -98,7 +98,7 @@ function typedoc() {
 }
 
 function ts(root, src) {
-	var tsResult = gulp.src(src)
+	var tsResult = gulp.src(['typings/main.d.ts', ...src])
 		.pipe(plugins.tslint())
 		.pipe(plugins.tslint.report('verbose'))
 		.pipe(plugins.preprocess({ context: env }))
@@ -121,7 +121,7 @@ function tsAppConfig() {
 		outFile: 'app.config.js'
 	});
 
-	return ts(config, 'src/scripts/app.config.ts');
+	return ts(config, ['src/scripts/app.config.ts']);
 }
 
 function tsApp() {
@@ -130,7 +130,7 @@ function tsApp() {
 		outFile: env.isProd ? 'app.js' : undefined
 	});
 
-	return ts(config, ['typings/main.d.ts', 'src/scripts/**/*.ts', '!src/scripts/app.config.ts']);
+	return ts(config, ['src/scripts/**/*.ts', '!src/scripts/app.config.ts']);
 }
 
 function assets() {
@@ -222,7 +222,7 @@ var protractorTsProject = plugins.typescript.createProject('tsconfig.json', {
 });
 
 function protractorTsSpec() {
-	var tsResult = gulp.src(['test/e2e/**/*.ts', 'typings/main.d.ts'])
+	var tsResult = gulp.src(['typings/main.d.ts', 'test/e2e/**/*.ts'])
 		.pipe(plugins.typescript(protractorTsProject));
 
 	return tsResult.js
@@ -243,10 +243,9 @@ function protractorRun() {
 }
 
 function watch() {
-	gulp.watch('src/scripts/**/*.{ts,css,html}', gulp.series(ts, 'unit'));
+	gulp.watch('src/scripts/**/*.{ts,css,html}', tsApp);
 	gulp.watch('src/scss/**/*.scss', scss);
 	gulp.watch('src/index.html', index);
-	gulp.watch('test/unit/**/*.ts', gulp.series('unit'));
 }
 
 function livereload() {
