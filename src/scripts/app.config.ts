@@ -12,8 +12,6 @@ System
 // @endif
 
 // @if isProd
-alert('prod');
-
 System
 	.config({
 		bundles: { 'js/app.js': ['app'] }
