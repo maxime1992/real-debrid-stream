@@ -16,4 +16,8 @@ export class SettingsService {
 
 		chrome.storage.sync.set(keyValue);
 	}
+
+	public removeSetting(key: string) {
+		chrome.storage.sync.remove(key);
+	}
 }
