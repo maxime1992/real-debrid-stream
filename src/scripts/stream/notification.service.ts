@@ -10,7 +10,12 @@ export class NotificationService {
 	create(text: string): void {
 		if (Notification.permission === 'granted') {
 			/* tslint:disable */
-			new Notification('Real-debrid stream', {body: text,	icon: './icon.png'});
+			let notif = new Notification('Real-debrid stream', {body: text,	icon: './icon.png'});
+
+			// on click, close the notification
+			notif.onclick = (() => {
+				notif.close();
+			});
 			/* tslint:enable */
 		}
 	}
