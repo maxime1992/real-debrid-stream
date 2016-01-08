@@ -4,27 +4,14 @@ declare var Notification: any;
 @Injectable()
 export class NotificationService {
 	constructor() {
-		if(Notification.permission !== 'granted') {
-			Notification.requestPermission();
-		}
+		Notification.requestPermission();
 	}
 
-	notify(text: string): void {
-		if (!Notification) {
-			alert('Desktop notifications not available in your browser. Try Chromium.');
-		}
-
-		else if (Notification.permission !== 'granted') {
-			Notification.requestPermission();
-		}
-
-		else {
-			/* tslint:disable:no-unused-expression */
-			new Notification('Real-debrid stream', {
-				icon: './icon.png',
-				body: text
-			});
-			/* tslint:enable:no-unused-expression */
+	create(text: string): void {
+		if (Notification.permission === 'granted') {
+			/* tslint:disable */
+			new Notification('Real-debrid stream', {body: text,	icon: './icon.png'});
+			/* tslint:enable */
 		}
 	}
 }

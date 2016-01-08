@@ -12,6 +12,7 @@
 
   "permissions": [
     "storage",
+    "notifications",
     "http://*",
     "https://*"
   ],

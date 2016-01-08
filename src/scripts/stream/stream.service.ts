@@ -24,7 +24,7 @@ export class StreamService {
 				// if a token is already set
 				if (this.realDebridToken) {
 					// just return the token
-					resolve(this.realDebridToken);
+					resolve();
 					return;
 				}
 
@@ -49,7 +49,7 @@ export class StreamService {
 								// if everything is good, save the token
 								this.realDebridToken = data.cookie.match(/auth=(.*);/)[1];
 								this.settingsService.setSetting('realDebridToken', this.realDebridToken);
-								resolve(this.realDebridToken);
+								resolve();
 							});
 					});
 				});
@@ -57,7 +57,7 @@ export class StreamService {
 		});
 	}
 
-	public realDebridUnrestrictLink(link: string) {
+	public realDebridUnrestrictLink(link: string): Promise<string> {
 		let self = this;
 
 		return new Promise<string>((resolve: any, reject: any) => {
@@ -70,26 +70,28 @@ export class StreamService {
 							resolve(data.main_link);
 						});
 				},
-				(reject: any) => {
-					this.notificationService.notify('A problem happened while reaching real-debrid API');
+				(realDebridError: string) => {
+					reject(realDebridError);
 				}
 			);
 		});
 	}
 
-	public streamOnKodi(link: string) {
-		this.settingsService.getSetting('kodiIp').then((kodiIp: string) => {
-			this.http.get(`http://${kodiIp}/jsonrpc?request={ "jsonrpc": "2.0", "method": "Player.Open", "params": { "item": { "file": "${encodeURIComponent(link)}" }}, "id": 1 }`)
-				.map((res: any) => res.json())
-				.subscribe((data: any) => {
-					if (data.result === 'ok') {
-						// link has been streamed to kodi
-					}
+	public streamOnKodi(link: string): Promise<string> {
+		return new Promise<string>((resolve: any, reject: any) => {
+			this.settingsService.getSetting('kodiIp').then((kodiIp: string) => {
+				this.http.get(`http://${kodiIp}/jsonrpc?request={ "jsonrpc": "2.0", "method": "Player.Open", "params": { "item": { "file": "${encodeURIComponent(link)}" }}, "id": 1 }`)
+					.map((res: any) => res.json())
+					.subscribe((data: any) => {
+						if (data.result === 'ok') {
+							resolve('Link has been streaming to Kodi');
+						}
 
-					else {
-						// link has not been streamed to kodi
-					}
-				});
+						else {
+							reject('A problem came up while trying to stream to Kodi');
+						}
+					});
+			});
 		});
 	}
 }
