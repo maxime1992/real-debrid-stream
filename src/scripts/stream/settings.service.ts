@@ -4,8 +4,8 @@ import {Injectable} from 'angular2/core';
 export class SettingsService {
 	public getSetting(key: string) {
 		return new Promise<string>((resolve: any, reject: any) => {
-			chrome.storage.sync.get(key, (response: string) => {
-				resolve(response[key]);
+			chrome.storage.sync.get(key, (items: {[key: string]: any}) => {
+				resolve(items[key]);
 			});
 		});
 	}
