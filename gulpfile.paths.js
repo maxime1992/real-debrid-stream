@@ -1,6 +1,10 @@
 'use strict';
 
 let baseLibs = [
+	// CSS
+	'node_modules/spinkit/css/spinners/2-double-bounce.css',
+
+	// JS
 	'node_modules/systemjs/dist/system.js',
 	'node_modules/es6-shim/es6-shim.js',
 	'node_modules/rxjs/bundles/Rx.js',

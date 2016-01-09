@@ -1,5 +1,5 @@
 import {Component, View} from 'angular2/core';
-import {FORM_DIRECTIVES} from 'angular2/common';
+import {FORM_DIRECTIVES, NgIf} from 'angular2/common';
 import {StreamService} from './stream.service';
 import {NotificationService} from './notification.service';
 
@@ -8,7 +8,7 @@ import {NotificationService} from './notification.service';
 	providers: [StreamService, NotificationService]
 })
 @View({
-	directives: [FORM_DIRECTIVES],
+	directives: [FORM_DIRECTIVES, NgIf],
 	template: `
 		<form
 			class="stream-item"
@@ -21,13 +21,23 @@ import {NotificationService} from './notification.service';
 
 			<input
 				class="btn btn-primary btn-block"
+				*ngIf="!isDebridingAndStreaming"
 				type="button"
 				value="Stream"
 				(click)="stream(urlToStream)">
+
+			<div
+				class="sk-double-bounce"
+				*ngIf="isDebridingAndStreaming">
+				<div class="sk-child sk-double-bounce1"></div>
+				<div class="sk-child sk-double-bounce2"></div>
+			</div>
 		</form>
 	`
 })
 export class StreamComponent {
+	public isDebridingAndStreaming: boolean = false;
+
 	constructor(
 		private streamService: StreamService,
 		public notificationService: NotificationService
@@ -38,20 +48,29 @@ export class StreamComponent {
 			return;
 		}
 
+		// change the state of the button
+		this.isDebridingAndStreaming = true;
+
 		// get unrestricted link from real debrid
 		this.streamService.realDebridUnrestrictLink(urlToStream).then(
 			(unrestrictedLink: string) =>  {
 				// send the link of the file to kodi
 				this.streamService.streamOnKodi(unrestrictedLink).then(
 					(kodiSuccess: any) => {
+						this.isDebridingAndStreaming = false;
+
 						this.notificationService.create(kodiSuccess);
 					},
 					(kodiError: any) => {
+						this.isDebridingAndStreaming = false;
+
 						this.notificationService.create(`Error from Kodi : "${kodiError}"`);
 					}
 				);
 			},
 			(realDebridError: string) => {
+				this.isDebridingAndStreaming = false;
+
 				this.notificationService.create(`Error from RD : "${realDebridError}"`);
 			}
 		);

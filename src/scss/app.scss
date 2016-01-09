@@ -59,7 +59,12 @@ html {
 
 .stream-item {
   input[type='button'] {
-    margin-top: 10px;
+    margin-top: 15px;
+    height:40px;
+  }
+
+  .sk-double-bounce {
+    margin: 15px auto;
   }
 }
 
