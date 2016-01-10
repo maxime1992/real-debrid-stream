@@ -83,7 +83,7 @@ export class StreamService {
 				this.http.get(`http://${kodiIp}/jsonrpc?request={ "jsonrpc": "2.0", "method": "Player.Open", "params": { "item": { "file": "${encodeURIComponent(link)}" }}, "id": 1 }`)
 					.map((res: any) => res.json())
 					.subscribe((data: any) => {
-						if (data.result === 'ok') {
+						if (data.result && data.result.toLowerCase() === 'ok') {
 							resolve('Link has been streaming to Kodi');
 						}
 

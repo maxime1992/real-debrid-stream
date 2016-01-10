@@ -6,6 +6,7 @@ import {HTTP_PROVIDERS, JSONP_PROVIDERS} from 'angular2/http';
 import {StreamComponent} from './stream/stream.component';
 import {SettingsComponent} from './stream/settings.component';
 import {StorageService} from './shared/services/storage.service';
+import {IdService} from './shared/services/id.service';
 
 @Component({
 	selector: 'app'
@@ -49,5 +50,6 @@ bootstrap(AppComponent, [
 	ROUTER_PROVIDERS,
 	HTTP_PROVIDERS,
 	JSONP_PROVIDERS,
-	StorageService
+	StorageService,
+	IdService
 ]);

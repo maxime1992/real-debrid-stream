@@ -2,13 +2,15 @@ import {Component, View} from 'angular2/core';
 import {FORM_DIRECTIVES, NgIf} from 'angular2/common';
 import {StreamService} from './stream.service';
 import {NotificationService} from './notification.service';
+import {HistoryComponent} from './history.component';
+import {HistoryService} from './history.service';
 
 @Component({
 	selector: 'stream',
-	providers: [StreamService, NotificationService]
+	providers: [StreamService, NotificationService, HistoryService]
 })
 @View({
-	directives: [FORM_DIRECTIVES, NgIf],
+	directives: [FORM_DIRECTIVES, NgIf, HistoryComponent],
 	template: `
 		<form
 			class="stream-item"
@@ -33,6 +35,10 @@ import {NotificationService} from './notification.service';
 				<div class="sk-child sk-double-bounce2"></div>
 			</div>
 		</form>
+
+		<hr>
+
+		<history></history>
 	`
 })
 export class StreamComponent {
@@ -40,7 +46,8 @@ export class StreamComponent {
 
 	constructor(
 		private streamService: StreamService,
-		public notificationService: NotificationService
+		public notificationService: NotificationService,
+		public historyService: HistoryService
 	) {}
 
 	stream(urlToStream: string): void {
@@ -60,11 +67,15 @@ export class StreamComponent {
 						this.isDebridingAndStreaming = false;
 
 						this.notificationService.create(kodiSuccess);
+
+						this.historyService.create(urlToStream, 'streamed');
 					},
 					(kodiError: any) => {
 						this.isDebridingAndStreaming = false;
 
 						this.notificationService.create(`Error from Kodi : "${kodiError}"`);
+
+						this.historyService.create(urlToStream, 'streamFail');
 					}
 				);
 			},
@@ -72,6 +83,8 @@ export class StreamComponent {
 				this.isDebridingAndStreaming = false;
 
 				this.notificationService.create(`Error from RD : "${realDebridError}"`);
+
+				this.historyService.create(urlToStream, 'debridFail');
 			}
 		);
 	}

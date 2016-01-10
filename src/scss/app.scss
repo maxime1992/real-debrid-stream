@@ -83,3 +83,34 @@ html {
     margin-top: 15px;
   }
 }
+
+// --------------
+// History Component
+// --------------
+
+.history-item {
+  max-height: 300px;
+  overflow: auto;
+  overflow-x: hidden;
+
+  .title {
+    display: inline-block;
+  }
+
+  .line {
+    padding: 5px;
+
+    &:hover {
+      background-color: #EEEEEE;
+      cursor: pointer;
+    }
+
+    .error {
+      color: #EA3939;
+    }
+
+    .success {
+      color: #5ECA68;
+    }
+  }
+}
