@@ -1,10 +1,10 @@
 import {Component, View} from 'angular2/core';
 import {FORM_DIRECTIVES} from 'angular2/common';
-import {SettingsService} from './settings.service';
+import {StorageService} from '../shared/services/storage.service';
 
 @Component({
 	selector: 'settings',
-	providers: [SettingsService]
+	providers: [StorageService]
 })
 @View({
 	directives: [FORM_DIRECTIVES],
@@ -46,20 +46,20 @@ export class SettingsComponent {
 	private realDebridPassword: string;
 	private kodiIp: string;
 
-	constructor(private settingsService: SettingsService) {
+	constructor(private storageService: StorageService) {
 		// at the beginning, restore settings
 		this.getSettings();
 	}
 
 	public saveSettings() {
-		this.settingsService.setSetting('realDebridEmail', this.realDebridEmail);
-		this.settingsService.setSetting('realDebridPassword', this.realDebridPassword);
-		this.settingsService.setSetting('kodiIp', this.kodiIp);
+		this.storageService.set('realDebridEmail', this.realDebridEmail);
+		this.storageService.set('realDebridPassword', this.realDebridPassword);
+		this.storageService.set('kodiIp', this.kodiIp);
 	}
 
 	public getSettings() {
-		this.settingsService.getSetting('realDebridEmail').then((value: string) => this.realDebridEmail = value);
-		this.settingsService.getSetting('realDebridPassword').then((value: string) => this.realDebridPassword = value);
-		this.settingsService.getSetting('kodiIp').then((value: string) => this.kodiIp = value);
+		this.storageService.get('realDebridEmail').then((value: string) => this.realDebridEmail = value);
+		this.storageService.get('realDebridPassword').then((value: string) => this.realDebridPassword = value);
+		this.storageService.get('kodiIp').then((value: string) => this.kodiIp = value);
 	}
 }

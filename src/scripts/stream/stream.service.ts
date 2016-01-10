@@ -2,7 +2,7 @@ import 'rxjs/add/operator/map';
 
 import {Injectable} from 'angular2/core';
 import {Http, Jsonp} from 'angular2/http';
-import {SettingsService} from './settings.service';
+import {StorageService} from '../shared/services/storage.service';
 import {NotificationService} from './notification.service';
 
 @Injectable()
@@ -12,13 +12,13 @@ export class StreamService {
 	constructor(
 		private http: Http,
 		private jsonp: Jsonp,
-		public settingsService: SettingsService,
+		public storageService: StorageService,
 		public notificationService: NotificationService
 	) {}
 
 	private realDebridConnect(): Promise<string> {
 		return new Promise<string>((resolve: any, reject: any) => {
-			this.settingsService.getSetting('realDebridToken').then((realDebridToken: string) => {
+			this.storageService.get('realDebridToken').then((realDebridToken: string) => {
 				this.realDebridToken = realDebridToken;
 
 				// if a token is already set
@@ -29,8 +29,8 @@ export class StreamService {
 				}
 
 				// otherwise try to connect to get a token
-				this.settingsService.getSetting('realDebridEmail').then((realDebridEmail: string) => {
-					this.settingsService.getSetting('realDebridPassword').then((realDebridPassword: string) => {
+				this.storageService.get('realDebridEmail').then((realDebridEmail: string) => {
+					this.storageService.get('realDebridPassword').then((realDebridPassword: string) => {
 						// otherwise reach real-debrid API to get one
 						return this.http.get(`https://real-debrid.com/ajax/login.php?user=${encodeURIComponent(realDebridEmail)}&pass=${encodeURIComponent(realDebridPassword)}`)
 							.map((res: any) => res.json())
@@ -39,7 +39,7 @@ export class StreamService {
 								if (data.error !== 0 || data.captcha !== 0 || data.pin !== 0) {
 									// remove the old token as it's no longer valid
 									delete this.realDebridToken;
-									this.settingsService.removeSetting('realDebridToken');
+									this.storageService.remove('realDebridToken');
 
 									// send the error message
 									reject(data.message);
@@ -48,7 +48,7 @@ export class StreamService {
 
 								// if everything is good, save the token
 								this.realDebridToken = data.cookie.match(/auth=(.*);/)[1];
-								this.settingsService.setSetting('realDebridToken', this.realDebridToken);
+								this.storageService.set('realDebridToken', this.realDebridToken);
 								resolve();
 							});
 					});
@@ -79,7 +79,7 @@ export class StreamService {
 
 	public streamOnKodi(link: string): Promise<string> {
 		return new Promise<string>((resolve: any, reject: any) => {
-			this.settingsService.getSetting('kodiIp').then((kodiIp: string) => {
+			this.storageService.get('kodiIp').then((kodiIp: string) => {
 				this.http.get(`http://${kodiIp}/jsonrpc?request={ "jsonrpc": "2.0", "method": "Player.Open", "params": { "item": { "file": "${encodeURIComponent(link)}" }}, "id": 1 }`)
 					.map((res: any) => res.json())
 					.subscribe((data: any) => {
