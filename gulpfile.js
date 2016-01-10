@@ -40,6 +40,7 @@ gulp.task('build', gulp.series(
 	tsAppConfig,
 	gulp.parallel(scss, tsApp),
 	assets,
+	fontAwesome,
 	index,
 	typedoc,
 	chromeAppAssets
@@ -149,6 +150,12 @@ function assets() {
 		.pipe(gulp.dest('build/libs'));
 
 	return merge(images, fonts, libs);
+}
+
+function fontAwesome() {
+	return gulp.src('node_modules/font-awesome/fonts/**/*')
+		.pipe(plugins.if(env.isProd, gulp.dest('build/fonts')))
+		.pipe(plugins.if(env.isDev, gulp.dest('build/libs/node_modules/font-awesome/fonts')));
 }
 
 function index() {

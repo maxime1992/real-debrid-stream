@@ -3,6 +3,7 @@
 let baseLibs = [
 	// CSS
 	'node_modules/spinkit/css/spinners/2-double-bounce.css',
+	'node_modules/font-awesome/css/font-awesome.min.css',
 
 	// JS
 	'node_modules/systemjs/dist/system.js',
