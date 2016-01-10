@@ -42,13 +42,20 @@ import {HistoryService} from './history.service';
 	`
 })
 export class StreamComponent {
+	public urlToStream: string;
 	public isDebridingAndStreaming: boolean = false;
 
 	constructor(
 		private streamService: StreamService,
-		public notificationService: NotificationService,
-		public historyService: HistoryService
-	) {}
+		private notificationService: NotificationService,
+		private historyService: HistoryService
+	) {
+		// if the user wants to restore a link to stream it again
+		// listen for urlToStream event
+		HistoryService.urlToStreamEventEmiter.subscribe((urlToStream: any) => {
+			this.urlToStream = urlToStream;
+		});
+	}
 
 	stream(urlToStream: string): void {
 		if (!urlToStream) {

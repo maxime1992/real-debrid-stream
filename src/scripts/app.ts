@@ -7,6 +7,7 @@ import {StreamComponent} from './stream/stream.component';
 import {SettingsComponent} from './stream/settings.component';
 import {StorageService} from './shared/services/storage.service';
 import {IdService} from './shared/services/id.service';
+import {HistoryService} from './stream/history.service';
 
 @Component({
 	selector: 'app'
@@ -51,5 +52,6 @@ bootstrap(AppComponent, [
 	HTTP_PROVIDERS,
 	JSONP_PROVIDERS,
 	StorageService,
-	IdService
+	IdService,
+	HistoryService
 ]);

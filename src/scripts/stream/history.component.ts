@@ -3,7 +3,8 @@ import {FORM_DIRECTIVES, NgFor, NgIf} from 'angular2/common';
 import {HistoryService} from './history.service';
 
 @Component({
-	selector: 'history'
+	selector: 'history',
+	providers: [HistoryService]
 })
 @View({
 	directives: [FORM_DIRECTIVES, NgFor, NgIf],
@@ -12,7 +13,7 @@ import {HistoryService} from './history.service';
 			<h2 class="title">History</h2> ({{ historyLength }} item{{ historyLength<=1 ? '' : 's' }} max)
 
 			<div *ngFor="#line of history" class="line">
-				<div class="row">
+				<div class="row" (click)="selectLine(line)">
 					<div class="col-xs-10">{{ line.link }}</div>
 					<div class="col-xs-2">
 						<i *ngIf="line.status === 'streamed'" class="fa fa-check success"></i>
@@ -36,5 +37,10 @@ export class HistoryComponent {
 		});
 
 		this.historyLength = HistoryService.HISTORY_LENGTH;
+	}
+
+	// when line is clicked, broadcast the link (to stream.component)
+	public selectLine(line: string): void {
+		HistoryService.urlToStreamEventEmiter.next(line.link);
 	}
 }

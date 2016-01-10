@@ -1,4 +1,4 @@
-import {Injectable} from 'angular2/core';
+import {Injectable, EventEmitter} from 'angular2/core';
 import {IdService} from '../shared/services/id.service';
 import {StorageService} from '../shared/services/storage.service';
 
@@ -6,6 +6,7 @@ import {StorageService} from '../shared/services/storage.service';
 export class HistoryService {
 	public static HISTORY_LENGTH: number = 5;
 	private history: Array<Object>;
+	public static urlToStreamEventEmiter: EventEmitter<any> = new EventEmitter();
 
 	constructor(
 		private idService: IdService,
