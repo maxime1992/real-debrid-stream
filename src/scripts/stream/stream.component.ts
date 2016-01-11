@@ -36,14 +36,15 @@ import {HistoryService} from './history.service';
 			</div>
 		</form>
 
-		<hr>
+		<hr *ngIf="history">
 
-		<history></history>
+		<history *ngIf="history"></history>
 	`
 })
 export class StreamComponent {
 	public urlToStream: string;
 	public isDebridingAndStreaming: boolean = false;
+	public history: Array<string>;
 
 	constructor(
 		private streamService: StreamService,
@@ -54,6 +55,10 @@ export class StreamComponent {
 		// listen for urlToStream event
 		HistoryService.urlToStreamEventEmiter.subscribe((urlToStream: any) => {
 			this.urlToStream = urlToStream;
+		});
+
+		this.historyService.read().then((history: Array<string>) => {
+			this.history = history;
 		});
 	}
 
