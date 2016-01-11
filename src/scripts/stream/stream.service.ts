@@ -9,6 +9,24 @@ import {NotificationService} from './notification.service';
 export class StreamService {
 	private realDebridToken: string;
 
+	public static realDebridHosts: Array<string> = [
+		'1fichier', '24uploading', '2shared', '4shared', 'allmyvideos',
+		'anafile', 'canalplus', 'cbs', 'clicknupload', 'divxstage',
+		'dailymotion', 'datafilehost', 'dateito', 'depfile', 'free',
+		'easybytez', 'exashare', 'extmatrix', 'faststore', 'filef',
+		'fileflyer', 'filerio', 'filesflash', 'gigapeta', 'hugefiles',
+		'hulkshare', 'kingfiles', 'letitbit', 'loadto', 'mediafire',
+		'mega', 'megashares', 'movshare', 'novamov', 'nowdownload',
+		'nowvideo',	'oboom', 'openload', 'ozofiles', 'purevid',
+		'skyfm', 'rapidgator', 'rarefile', 'rutuberu', 'salefiles',
+		'scribd', 'secureupload', 'sendspace', 'shareflare', 'soundcloud',
+		'speedyshare', 'thevideo', 'turbobit', 'tusfiles', 'uloz',
+		'unibytes', 'uplea', 'uploadaf', 'uploadable', 'uploadc',
+		'ulto', 'uploadrocket', 'uploadx', 'uptobox', 'userscloud',
+		'videoweed', 'vimeo', 'vipfile', 'wat', 'youtube',
+		'youwatch',	'yunfile',	'zippyshare'
+	];
+
 	constructor(
 		private http: Http,
 		private jsonp: Jsonp,
@@ -94,6 +112,4 @@ export class StreamService {
 			});
 		});
 	}
-
-
 }

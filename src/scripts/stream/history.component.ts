@@ -1,6 +1,7 @@
 import {Component, View} from 'angular2/core';
 import {FORM_DIRECTIVES, NgFor, NgIf} from 'angular2/common';
 import {HistoryService} from './history.service';
+import {StreamService} from './stream.service';
 
 @Component({
 	selector: 'history',
@@ -14,7 +15,7 @@ import {HistoryService} from './history.service';
 
 			<div *ngFor="#line of history" class="line">
 				<div class="row" (click)="selectLine(line)">
-					<div class="col-xs-10">{{ line.link }}</div>
+					<div class="col-xs-10"><img *ngIf="getImage(line.link)" [src]="getImage(line.link)" /></div>
 					<div class="col-xs-2">
 						<i *ngIf="line.status === 'streamed'" class="fa fa-check success"></i>
 						<i *ngIf="line.status === 'streamFail'" class="fa fa-exclamation error"></i>
@@ -42,5 +43,15 @@ export class HistoryComponent {
 	// when line is clicked, broadcast the link (to stream.component)
 	public selectLine(line: string): void {
 		HistoryService.urlToStreamEventEmiter.next(line.link);
+	}
+
+	public getImage(url: string): string {
+		for (let i=0; i < StreamService.realDebridHosts.length; i++) {
+			if (url.indexOf(StreamService.realDebridHosts[i]) > 0) {
+				return `images/real-debrid-hosts/${StreamService.realDebridHosts[i]}.png`;
+			}
+		}
+
+		return null;
 	}
 }
