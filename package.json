@@ -6,7 +6,7 @@
   },
   "license": "MIT",
   "version": "1.0.0",
-  "description": "Allows you to debrid url with your real debrid account and stream the video on your raspberry pi for example.",
+  "description": "Allows you to debrid url with your real debrid account and stream the video on Kodi.",
   "scripts": {
     "postinstall": "typings install",
     "start": "gulp build serve"

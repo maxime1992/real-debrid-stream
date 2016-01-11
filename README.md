@@ -2,7 +2,7 @@
 
 [![Join the chat at https://gitter.im/maxime1992/real-debrid-stream](https://badges.gitter.im/maxime1992/real-debrid-stream.svg)](https://gitter.im/maxime1992/real-debrid-stream?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
-Stream movies on your raspberry pi using your real debrid account
+Stream movies on [Kodi](http://kodi.tv/) using your [Real-debrid](https://real-debrid.com/) account.
 
 ## Install
 ```
@@ -11,18 +11,20 @@ $ npm install
 $ gulp build serve
 ```
 
-Note: the `serve` task won't automatically launch the browser for you.
-To view the app please open a new tab and go to `http://localhost:8080/`.
+Then, import the app into Chrome :  
+- Navigate to [chrome://extensions](chrome://extensions)
+- Click on `Load Unpacked Extension`
+- Select `real-debrid-stream` folder
 
-Then, import the app into Chrome.
+The app should now be loaded into your browser.
 
 ## Usage
 ### Tasks
 - `$ gulp clean`: Remove generated folders - `build`, `docs` and `coverage`.
-- `$ gulp unit`: Run Karma against all `test/unit/**/*.spec.js` files.
-- `$ gulp e2e`: Run Protractor against all `test/e2e/**/*.e2e.js` files. The project must be being served before running end-to-end tests.
 - `$ gulp build`: Create distribution package. See environment `targets` below.
 - `$ gulp serve`: Start web-server and live-reload. See environment `targets` below.
+
+Short command when developing : `npm start`
 
 ### Environments
 Default: `NODE_ENV=development` and `PORT=8080`.
@@ -38,7 +40,7 @@ Default: `NODE_ENV=development` and `PORT=8080`.
 In lieu of a formal styleguide, take care to maintain the existing coding style. Add unit tests for any new or changed functionality. When submitting a PR, make sure that the commit messages match the [Angular conventions](https://github.com/angular/angular/blob/master/CONTRIBUTING.md#commit-message-format).
 
 ## Disclaimer
-The law allows you to download a file only if you own the original. No one but you will not be held responsible for incorrect use of this plugin.
+The law allows you to download/stream/watch a file/movie only if you own the original. No one but you will be held responsible for incorrect use of this plugin.
 
 ## License
 MIT
