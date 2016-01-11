@@ -19,7 +19,9 @@ export class HistoryService {
 	public create(link: string, status: string) {
 		let id = this.idService.getId();
 
-		let lineHistory = {id, link, status};
+		let date = (new Date()).toString().match(/(.*) [0-9]{4} ([0-9]{1,2}:[0-9]{1,2}).*/);
+
+		let lineHistory = {id, date, link, status};
 
 		this.history.unshift(lineHistory);
 

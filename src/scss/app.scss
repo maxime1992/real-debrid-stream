@@ -103,6 +103,7 @@ html {
     &:hover {
       background-color: #EEEEEE;
       cursor: pointer;
+      font-weight: bold;
     }
 
     .error {
@@ -111,6 +112,10 @@ html {
 
     .success {
       color: #5ECA68;
+    }
+
+    .date {
+      color: #686868;
     }
   }
 }
