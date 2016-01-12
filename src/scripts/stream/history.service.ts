@@ -21,7 +21,7 @@ export class HistoryService {
 
 		let date = (new Date()).toString().match(/(.*) [0-9]{4} ([0-9]{1,2}:[0-9]{1,2}).*/);
 
-		let lineHistory = {id, date, link, status};
+		let lineHistory = { id, date: `${date[1]} - ${date[2]}`, link, status };
 
 		this.history.unshift(lineHistory);
 
