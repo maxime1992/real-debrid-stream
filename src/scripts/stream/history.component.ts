@@ -15,9 +15,12 @@ import {StreamService} from './stream.service';
 
 			<div *ngFor="#line of history" class="line">
 				<div class="row" (click)="selectLine(line)">
-					<div class="col-xs-1 host"><img *ngIf="getImage(line.link)" [src]="getImage(line.link)" /></div>
+					<div class="col-xs-1 host">
+						<img *ngIf="getImage(line.link)" [src]="getImage(line.link)" />
+						<i *ngIf="getImage(line.link) == null" class="fa fa-times"></i>
+					</div>
 					<div class="col-xs-8 date">{{ line.date }}</div>
-					<div class="col-xs-2 status">
+					<div class="col-xs-2 status text-center">
 						<i *ngIf="line.status === 'streamed'" class="fa fa-check success"></i>
 						<i *ngIf="line.status === 'streamFail'" class="fa fa-exclamation error"></i>
 						<i *ngIf="line.status === 'debridFail'" class="fa fa-exclamation-circle error"></i>

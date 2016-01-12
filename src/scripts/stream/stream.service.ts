@@ -1,4 +1,5 @@
 import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/timeout';
 
 import {Injectable} from 'angular2/core';
 import {Http, Jsonp} from 'angular2/http';
@@ -51,6 +52,7 @@ export class StreamService {
 					this.storageService.get('realDebridPassword').then((realDebridPassword: string) => {
 						// otherwise reach real-debrid API to get one
 						return this.http.get(`https://real-debrid.com/ajax/login.php?user=${encodeURIComponent(realDebridEmail)}&pass=${encodeURIComponent(realDebridPassword)}`)
+							.timeout(2000)
 							.map((res: any) => res.json())
 							.subscribe((data: any) => {
 								// if a problem happened (wrong password, captacha|pin required, etc)
@@ -68,6 +70,9 @@ export class StreamService {
 								this.realDebridToken = data.cookie.match(/auth=(.*);/)[1];
 								this.storageService.set('realDebridToken', this.realDebridToken);
 								resolve();
+							},
+							(error: any) => {
+								reject('Timeout : Real-debrid did not give any answer after 2s');
 							});
 					});
 				});
@@ -80,10 +85,16 @@ export class StreamService {
 
 		return new Promise<string>((resolve: any, reject: any) => {
 			this.realDebridConnect().then(
-				() => {
+				(data: any) => {
+					// if real-debrid could not unrestrict the link
 					self.http.get(`https://real-debrid.com/api/unrestrict.php?auth=${encodeURIComponent(this.realDebridToken)}&link=${encodeURIComponent(link)}`)
 						.map((res: any) => res.json())
 						.subscribe((data: any) => {
+							if (data.message === 'Hébergeur non supporté ou format de lien non reconnu') {
+								reject('Host is not supported by Real-debrid');
+								return;
+							}
+
 							// return the unrestricted link
 							resolve(data.main_link);
 						});
@@ -99,15 +110,19 @@ export class StreamService {
 		return new Promise<string>((resolve: any, reject: any) => {
 			this.storageService.get('kodiIp').then((kodiIp: string) => {
 				this.http.get(`http://${kodiIp}/jsonrpc?request={ "jsonrpc": "2.0", "method": "Player.Open", "params": { "item": { "file": "${encodeURIComponent(link)}" }}, "id": 1 }`)
+					.timeout(2000)
 					.map((res: any) => res.json())
 					.subscribe((data: any) => {
 						if (data.result && data.result.toLowerCase() === 'ok') {
-							resolve('Link has been streaming to Kodi');
+							resolve('Link has been streamed on Kodi');
 						}
 
 						else {
-							reject('A problem came up while trying to stream to Kodi');
+							reject('A problem came up while trying to stream on Kodi');
 						}
+					},
+					(error: any) => {
+						reject('Kodi does not give any answer. Please check Kodi\'s IP. (Are you on the same network ?).');
 					});
 			});
 		});
