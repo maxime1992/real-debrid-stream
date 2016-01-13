@@ -4,8 +4,7 @@ import {HistoryService} from './history.service';
 import {StreamService} from './stream.service';
 
 @Component({
-	selector: 'history',
-	providers: [HistoryService]
+	selector: 'history'
 })
 @View({
 	directives: [FORM_DIRECTIVES, NgFor, NgIf],
@@ -37,9 +36,12 @@ export class HistoryComponent {
 	constructor(
 		private historyService: HistoryService
 	) {
-		historyService.read().then((history: Array<Object>) => {
+		this.historyService.history$.subscribe((history: Array<string>) => {
 			this.history = history;
 		});
+
+		// update history
+		this.historyService.read();
 
 		this.historyLength = HistoryService.HISTORY_LENGTH;
 	}

@@ -7,6 +7,8 @@ import {StreamComponent} from './stream/stream.component';
 import {SettingsComponent} from './stream/settings.component';
 import {StorageService} from './shared/services/storage.service';
 import {IdService} from './shared/services/id.service';
+import {StreamService} from './stream/stream.service';
+import {NotificationService} from './stream/notification.service';
 import {HistoryService} from './stream/history.service';
 
 @Component({
@@ -51,6 +53,8 @@ bootstrap(AppComponent, [
 	ROUTER_PROVIDERS,
 	HTTP_PROVIDERS,
 	JSONP_PROVIDERS,
+	StreamService,
+	NotificationService,
 	StorageService,
 	IdService,
 	HistoryService

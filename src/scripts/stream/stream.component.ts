@@ -6,8 +6,7 @@ import {HistoryComponent} from './history.component';
 import {HistoryService} from './history.service';
 
 @Component({
-	selector: 'stream',
-	providers: [StreamService, NotificationService, HistoryService]
+	selector: 'stream'
 })
 @View({
 	directives: [FORM_DIRECTIVES, NgIf, HistoryComponent],
@@ -51,14 +50,17 @@ export class StreamComponent {
 		private notificationService: NotificationService,
 		private historyService: HistoryService
 	) {
+		this.historyService.history$.subscribe((history: Array<string>) => {
+			this.history = history;
+		});
+
+		// update history
+		this.historyService.read();
+
 		// if the user wants to restore a link to stream it again
 		// listen for urlToStream event
 		HistoryService.urlToStreamEventEmiter.subscribe((urlToStream: any) => {
 			this.urlToStream = urlToStream;
-		});
-
-		this.historyService.read().then((history: Array<string>) => {
-			this.history = history;
 		});
 	}
 
