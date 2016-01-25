@@ -154,8 +154,7 @@ function assets() {
 
 function fontAwesome() {
 	return gulp.src('node_modules/font-awesome/fonts/**/*')
-		.pipe(plugins.if(env.isProd, gulp.dest('build/fonts')))
-		.pipe(plugins.if(env.isDev, gulp.dest('build/libs/node_modules/font-awesome/fonts')));
+		.pipe(gulp.dest('build/fonts'));
 }
 
 function index() {
