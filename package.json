@@ -5,7 +5,7 @@
     "url": "https://github.com/maxime1992/real-debrid-stream"
   },
   "license": "MIT",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "Allows you to debrid url with your real debrid account and stream the video on Kodi.",
   "scripts": {
     "postinstall": "typings install",
