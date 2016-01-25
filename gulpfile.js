@@ -149,7 +149,20 @@ function assets() {
 		.pipe(plugins.size({ title: 'libs' }))
 		.pipe(gulp.dest('build/libs'));
 
-	return merge(images, fonts, libs);
+	var contentScripts = gulp.src('src/content-scripts/*')
+		.pipe(plugins.if(env.isProd, plugins.uglify()))
+		.pipe(plugins.size({ title: 'content-scripts' }))
+		.pipe(gulp.dest('build/js/content-scripts'));
+
+	var contentScriptsLibs = gulp.src([
+			'node_modules/jquery/dist/jquery.min.js',
+			'node_modules/bootstrap/dist/js/bootstrap.min.js',
+			'node_modules/bootstrap/dist/css/bootstrap.min.css'
+		], { base: '.' })
+		.pipe(plugins.size({ title: 'content-scripts libs' }))
+		.pipe(gulp.dest('build/libs'));
+
+	return merge(images, fonts, libs, contentScripts, contentScriptsLibs);
 }
 
 function fontAwesome() {
@@ -250,6 +263,7 @@ function protractorRun() {
 
 function watch() {
 	gulp.watch('src/scripts/**/*.{ts,css,html}', tsApp);
+	gulp.watch('src/content-scripts/*.js', assets);
 	gulp.watch('src/scss/**/*.scss', scss);
 	gulp.watch('src/index.html', index);
 }

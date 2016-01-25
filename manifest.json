@@ -17,5 +17,17 @@
     "https://*/*"
   ],
 
+  "content_scripts": [
+    {
+      "matches": ["http://www.dl-protect.com/*"],
+      "css": ["libs/node_modules/bootstrap/dist/css/bootstrap.min.css"],
+      "js": [
+        "libs/node_modules/jquery/dist/jquery.min.js",
+        "libs/node_modules/bootstrap/dist/js/bootstrap.min.js",
+        "js/content-scripts/content-script.js"
+      ]
+    }
+  ],
+
   "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'"
 }
